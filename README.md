@@ -1,4 +1,4 @@
-# Project Name
+# Dockerized Django + Postgress + React web-app
 Description
 
 A Dockerized web application combining Django (backend), PostgreSQL (database), and React with Vite (frontend). This setup allows for isolated development and deployment environments using Docker.
