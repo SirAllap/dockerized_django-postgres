@@ -68,13 +68,13 @@ cd your-repository
 ### Build and Run
 
 Navigate to the project directory:
-
-    cd djangoapp/django-docker
-
+```
+cd djangoapp/django-docker
+```
 ### Start the application:
 - This will build the Docker images and start the containers.
 ```
-    docker-compose up --build
+docker-compose up --build
 ```
 ### Access the Application:
 - Frontend: Open your browser and go to http://localhost:5174
@@ -86,11 +86,11 @@ Navigate to the project directory:
 Frontend Port: The frontend application is bound to port 5174 on the host machine. Adjust as needed in the docker-compose.yml file.
 
 ### Database Configuration: Environment variables for PostgreSQL:
-
-        DATABASE_NAME=postgres
-        DATABASE_USER=postgres
-        DATABASE_PASS=postgres
-
+```
+DATABASE_NAME=postgres
+DATABASE_USER=postgres
+DATABASE_PASS=postgres
+```
 ## Running Tests
 
 ### To run Django tests:
