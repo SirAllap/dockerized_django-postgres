@@ -1,18 +1,18 @@
-version: "3"
-
 services:
-  web:
+  backend-api:
     container_name: api
-    build: .
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     command: python /djangoapp/manage.py runserver 0.0.0.0:8001
     volumes:
-      - .:/djangoapp
+      - ./backend:/djangoapp
     ports:
       - "8001:8001"
     depends_on:
-      - db
+      - postgres-db
 
-  db:
+  postgres-db:
     container_name: postgresql
     image: postgres:14
     volumes:
@@ -24,19 +24,19 @@ services:
     ports:
       - "5433:5432"
 
-  frontend:
+  frontend-app:
     container_name: app
     build:
-      context: ../frontend
+      context: ./frontend
       dockerfile: Dockerfile
     command: npm run host
     volumes:
-      - ../frontend:/frontend
+      - ./frontend:/frontend
       - /frontend/node_modules
     ports:
       - "5174:5173"
     depends_on:
-      - web
+      - backend-api
 
 volumes:
   postgres_data:

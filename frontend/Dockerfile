@@ -8,7 +8,7 @@ WORKDIR /frontend
 COPY package.json ./
 
 # Install all dependencies, including dev dependencies
-RUN npm install --include=dev
+RUN npm install && NODE_ENV=development
 
 # Copy the rest of your application code to the container
 COPY . .
