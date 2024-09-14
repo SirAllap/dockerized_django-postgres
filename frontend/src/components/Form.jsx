@@ -1,62 +1,62 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
-import api from "../api";
-import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
-import "../styles/Form.css";
+import { useState } from "react"
+import api from "../api"
+import { useNavigate } from "react-router-dom"
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants"
+import "../styles/Form.css"
 
 const Form = ({ route, method }) => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [emailError, setEmailError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
-  const navigate = useNavigate();
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [emailError, setEmailError] = useState(null)
+  const [passwordError, setPasswordError] = useState(null)
+  const navigate = useNavigate()
 
   // Determine if the form is for login or registration
-  const name = method === "login" ? "Login" : "Register";
+  const name = method === "login" ? "Login" : "Register"
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     // Basic form validation
     if (!email || !password || (method !== "login" && !username)) {
-      alert("Please fill in all required fields.");
-      return;
+      alert("Please fill in all required fields.")
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
 
     // Prepare data payload based on the method
     const data =
-      method === "login" ? { email, password } : { username, email, password };
+      method === "login" ? { email, password } : { username, email, password }
 
     try {
       // Send data to the specified API route
-      const res = await api.post(route, data);
+      const res = await api.post(route, data)
 
       if (method === "login") {
         // Save tokens if the login is successful
-        localStorage.setItem(ACCESS_TOKEN, res.data.access);
-        localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
-        navigate("/"); // Redirect to home
+        localStorage.setItem(ACCESS_TOKEN, res.data.access)
+        localStorage.setItem(REFRESH_TOKEN, res.data.refresh)
+        navigate("/") // Redirect to home
       } else {
         // Redirect to login after registration
-        navigate("/login");
+        navigate("/login")
       }
     } catch (error) {
       // Display the error message to the user
       // alert("An error occurred. Please check your input and try again.");
-      console.error("Error:", error);
+      console.error("Error:", error)
       if (error.response.data.email)
-        setEmailError(error.response.data.email[0]);
+        setEmailError(error.response.data.email[0])
       if (error.response.data.password)
-        setPasswordError(error.response.data.password[0]);
+        setPasswordError(error.response.data.password[0])
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false) // Reset loading state
     }
-  };
+  }
 
   return (
     <section className="flex justify-center items-center min-h-screen">
@@ -89,7 +89,7 @@ const Form = ({ route, method }) => {
         )}
 
         <input
-          className="my-2 ml-2 px-2 py-2 w-full border border-indigo-300/40 bg-transparent rounded-md text-[#474747] dark:text-white error"
+          className="my-2 px-2 py-2 w-full border border-indigo-300/40 bg-transparent rounded-md text-[#474747] dark:text-white error"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -98,7 +98,7 @@ const Form = ({ route, method }) => {
         />
         {method !== "login" && (
           <input
-            className="my-2 ml-2 px-2 py-2 w-full border border-indigo-300/40 bg-transparent rounded-md text-[#474747] dark:text-white"
+            className="my-2 px-2 py-2 w-full border border-indigo-300/40 bg-transparent rounded-md text-[#474747] dark:text-white"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
@@ -130,7 +130,7 @@ const Form = ({ route, method }) => {
           </div>
         )}
         <input
-          className="my-2 ml-2 px-2 py-2 w-full border border-indigo-300/40 bg-transparent rounded-md text-[#474747] dark:text-white"
+          className="my-2 px-2 py-2 w-full border border-indigo-300/40 bg-transparent rounded-md text-[#474747] dark:text-white"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -143,19 +143,21 @@ const Form = ({ route, method }) => {
             ? "Haven't registered yet? "
             : "Already registered? "}
           {method === "login" ? (
-            <span
-              className="text-indigo-500 font-bold cursor-pointer hover:text-indigo-600"
+            <button
+              className="text-indigo-500 font-bold cursor-pointer hover:text-indigo-600 focus-visible:outline-none focus-visible:underline"
+              type="button"
               onClick={() => navigate("/register")}
             >
               Register
-            </span>
+            </button>
           ) : (
-            <span
-              className="text-indigo-500 font-bold cursor-pointer hover:text-indigo-600"
+            <button
+              className="text-indigo-500 font-bold cursor-pointer hover:text-indigo-600 focus-visible:outline-none focus-visible:underline"
+              type="button"
               onClick={() => navigate("/login")}
             >
               Login
-            </span>
+            </button>
           )}
         </p>
         <button
@@ -167,7 +169,7 @@ const Form = ({ route, method }) => {
         </button>
       </form>
     </section>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form
