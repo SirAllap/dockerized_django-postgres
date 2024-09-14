@@ -1,62 +1,63 @@
-import { useState, useEffect } from "react";
-import api from "../api";
-import { ToggleScreenMode } from "../components/ToggleScreenMode";
-import { LogoutButton } from "../components/LogoutButton";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"
+import api from "../api"
+import { ToggleScreenMode } from "../components/ToggleScreenMode"
+import { LogoutButton } from "../components/LogoutButton"
+import { useNavigate } from "react-router-dom"
+import { PokemonButton } from '../components/PokemonButton'
 
 const Expenses = () => {
-  const [expenses, setExpenses] = useState([]);
-  const [editId, setEditId] = useState(null);
-  const [editedAmount, setEditedAmount] = useState("");
-  const [editedContent, setEditedContent] = useState("");
-  const [newAmount, setNewAmount] = useState("");
-  const [newContent, setNewContent] = useState("");
-  const navigate = useNavigate();
+  const [expenses, setExpenses] = useState([])
+  const [editId, setEditId] = useState(null)
+  const [editedAmount, setEditedAmount] = useState("")
+  const [editedContent, setEditedContent] = useState("")
+  const [newAmount, setNewAmount] = useState("")
+  const [newContent, setNewContent] = useState("")
+  const navigate = useNavigate()
 
   useEffect(() => {
-    getExpenses();
-  }, []);
+    getExpenses()
+  }, [])
 
   const getExpenses = () => {
     api
       .get("/api/expenses/")
       .then((res) => res.data)
       .then((data) => {
-        setExpenses(data);
+        setExpenses(data)
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => console.log(err))
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     api
       .post("/api/expenses/", { amount: newAmount, content: newContent })
       .then((res) => {
-        if (res.status === 201) console.log("Expense created");
-        else console.log("Failed to create expense");
-        getExpenses();
-        setNewAmount("");
-        setNewContent("");
+        if (res.status === 201) console.log("Expense created")
+        else console.log("Failed to create expense")
+        getExpenses()
+        setNewAmount("")
+        setNewContent("")
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => console.log(err))
+  }
 
   const deleteExpense = (id) => {
     api
       .delete(`/api/expenses/delete/${id}/`)
       .then((res) => {
-        if (res.status === 204) console.log("Expenses deleted");
-        else console.log("Failed to delete expense");
-        getExpenses();
+        if (res.status === 204) console.log("Expenses deleted")
+        else console.log("Failed to delete expense")
+        getExpenses()
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => console.log(err))
+  }
 
   const startEditExpense = (expense) => {
-    setEditId(expense.id);
-    setEditedAmount(expense.amount);
-    setEditedContent(expense.content);
-  };
+    setEditId(expense.id)
+    setEditedAmount(expense.amount)
+    setEditedContent(expense.content)
+  }
 
   const applyEditExpense = (id) => {
     api
@@ -65,29 +66,34 @@ const Expenses = () => {
         content: editedContent,
       })
       .then((res) => {
-        if (res.status === 200) console.log("Expense updated");
-        else console.log("Failed to update expense");
-        getExpenses();
-        setEditId(null);
+        if (res.status === 200) console.log("Expense updated")
+        else console.log("Failed to update expense")
+        getExpenses()
+        setEditId(null)
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => console.log(err))
+  }
 
   const cancelEdit = () => {
-    setEditId(null);
-  };
+    setEditId(null)
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto py-5 px-5">
-      <section className="max-w-screen-xl flex flex-row justify-end gap-5">
-        <button
-          className="border border-yellow-300 bg-yellow-500 py-2 px-5 text-white rounded-md hover:bg-transparent hover:text-yellow-500 transition-all duration-300"
-          onClick={() => navigate("/")}
-        >
-          Add notes
-        </button>
-        <ToggleScreenMode />
-        <LogoutButton />
+      <section className="max-w-screen-xl flex flex-row justify-between">
+        <div className="">
+          <PokemonButton />
+        </div>
+        <div className="flex flex-row gap-5">
+          <button
+            className="border border-yellow-300 bg-yellow-500 py-2 px-5 text-white rounded-md hover:bg-transparent hover:text-yellow-500 transition-all duration-300"
+            onClick={() => navigate("/")}
+          >
+            Add notes
+          </button>
+          <ToggleScreenMode />
+          <LogoutButton />
+        </div>
       </section>
       <div className="flex flex-col justify-between items-center my-5">
         <h2 className="text-3xl">Expenses</h2>
@@ -212,7 +218,7 @@ const Expenses = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Expenses;
+export default Expenses
