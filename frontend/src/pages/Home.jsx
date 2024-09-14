@@ -1,60 +1,61 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
-import api from "../api";
-import { ToggleScreenMode } from "../components/ToggleScreenMode";
-import { LogoutButton } from "../components/LogoutButton";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"
+import api from "../api"
+import { ToggleScreenMode } from "../components/ToggleScreenMode"
+import { LogoutButton } from "../components/LogoutButton"
+import { useNavigate } from "react-router-dom"
+import { PokemonButton } from '../components/PokemonButton'
 
 const Home = () => {
-  const [notes, setNotes] = useState([]);
-  const [expenses, setExpenses] = useState([]);
-  const [editId, setEditId] = useState(null);
-  const [editedTitle, setEditedTitle] = useState("");
-  const [editedContent, setEditedContent] = useState("");
-  const [newTitle, setNewTitle] = useState("");
-  const [newContent, setNewContent] = useState("");
-  const [selectedExpense, setSelectedExpense] = useState(null);
-  const [attachId, setAttachId] = useState(null);
-  const navigate = useNavigate();
+  const [notes, setNotes] = useState([])
+  const [expenses, setExpenses] = useState([])
+  const [editId, setEditId] = useState(null)
+  const [editedTitle, setEditedTitle] = useState("")
+  const [editedContent, setEditedContent] = useState("")
+  const [newTitle, setNewTitle] = useState("")
+  const [newContent, setNewContent] = useState("")
+  const [selectedExpense, setSelectedExpense] = useState(null)
+  const [attachId, setAttachId] = useState(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
-    getNotes();
-    getExpenses();
-  }, []);
+    getNotes()
+    getExpenses()
+  }, [])
 
   const getNotes = () => {
     api
       .get("/api/notes/")
       .then((res) => res.data)
       .then((data) => {
-        setNotes(data);
+        setNotes(data)
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => console.log(err))
+  }
 
   const getExpenses = () => {
     api
       .get("/api/expenses/")
       .then((res) => res.data)
       .then((data) => {
-        setExpenses(data);
+        setExpenses(data)
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => console.log(err))
+  }
 
   const deleteNote = (id) => {
     api
       .delete(`/api/notes/delete/${id}/`)
       .then((res) => {
-        if (res.status === 204) console.log("Note deleted");
-        else console.log("Failed to delete note");
-        getNotes();
+        if (res.status === 204) console.log("Note deleted")
+        else console.log("Failed to delete note")
+        getNotes()
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => console.log(err))
+  }
 
   const createNote = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     api
       .post("/api/notes/", {
         content: newContent,
@@ -62,25 +63,25 @@ const Home = () => {
         expense: selectedExpense,
       })
       .then((res) => {
-        if (res.status === 201) console.log("Note created");
-        else console.log("Failed to make note");
-        getNotes();
-        setNewTitle("");
-        setNewContent("");
-        setSelectedExpense(null);
+        if (res.status === 201) console.log("Note created")
+        else console.log("Failed to make note")
+        getNotes()
+        setNewTitle("")
+        setNewContent("")
+        setSelectedExpense(null)
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => console.log(err))
+  }
 
   const startEditNote = (note) => {
-    setEditId(note.id);
-    setEditedTitle(note.title);
-    setEditedContent(note.content);
-  };
+    setEditId(note.id)
+    setEditedTitle(note.title)
+    setEditedContent(note.content)
+  }
 
   const startAttachExpense = (note) => {
-    setAttachId(note.id);
-  };
+    setAttachId(note.id)
+  }
 
   const applyEditNote = (id) => {
     api
@@ -90,34 +91,39 @@ const Home = () => {
         expense: selectedExpense,
       })
       .then((res) => {
-        console.log(res.data);
-        if (res.status === 200) console.log("Note updated");
-        else console.log("Failed to update note");
-        getNotes();
-        setEditId(null);
-        setAttachId(null);
-        setEditedTitle("");
-        setEditedContent("");
-        setSelectedExpense(null);
+        console.log(res.data)
+        if (res.status === 200) console.log("Note updated")
+        else console.log("Failed to update note")
+        getNotes()
+        setEditId(null)
+        setAttachId(null)
+        setEditedTitle("")
+        setEditedContent("")
+        setSelectedExpense(null)
       })
-      .catch((err) => console.log(err));
-  };
+      .catch((err) => console.log(err))
+  }
 
   const cancelEdit = () => {
-    setEditId(null);
-  };
+    setEditId(null)
+  }
 
   return (
     <div className="max-w-screen-xl mx-auto py-5 px-5 h-svh">
-      <section className="max-w-screen-xl flex flex-row justify-end gap-5">
-        <button
-          className="border border-yellow-300 bg-yellow-500 py-2 px-5 text-white rounded-md hover:bg-transparent hover:text-yellow-500 transition-all duration-300"
-          onClick={() => navigate("/expenses")}
-        >
-          Add expenses
-        </button>
-        <ToggleScreenMode />
-        <LogoutButton />
+      <section className="max-w-screen-xl flex flex-row justify-between">
+        <div className="">
+          <PokemonButton />
+        </div>
+        <div className="flex flex-row gap-5">
+          <button
+            className="border border-yellow-300 bg-yellow-500 py-2 px-5 text-white rounded-md hover:bg-transparent hover:text-yellow-500 transition-all duration-300"
+            onClick={() => navigate("/expenses")}
+          >
+            Add expenses
+          </button>
+          <ToggleScreenMode />
+          <LogoutButton />
+        </div>
       </section>
       <section>
         <div className="flex flex-col justify-between items-center my-5">
@@ -153,8 +159,8 @@ const Home = () => {
           <select
             className="py-2 px-2 border border-pink-300 bg-transparent rounded-md dark:text-white"
             onChange={(e) => {
-              const expenseId = parseInt(e.target.value);
-              setSelectedExpense(expenseId);
+              const expenseId = parseInt(e.target.value)
+              setSelectedExpense(expenseId)
             }}
             defaultValue="Select expense"
           >
@@ -251,10 +257,10 @@ const Home = () => {
                         <select
                           className="py-2 px-2 w-full border border-pink-300 bg-transparent rounded-md dark:text-white"
                           onChange={(e) => {
-                            const expenseId = parseInt(e.target.value);
-                            setSelectedExpense(expenseId);
-                            setEditedTitle(note.title);
-                            setEditedContent(note.content);
+                            const expenseId = parseInt(e.target.value)
+                            setSelectedExpense(expenseId)
+                            setEditedTitle(note.title)
+                            setEditedContent(note.content)
                           }}
                           defaultValue="Select expense"
                         >
@@ -317,7 +323,7 @@ const Home = () => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
